@@ -1,0 +1,43 @@
+server:
+  netty:
+    idle-timeout: 15s
+    connection-timeout: 2s
+  port: 50090
+  shutdown: graceful
+  
+spring:
+  application:
+    name: edge-service
+  devtools:
+    livereload:
+      port: 50091
+    restart:
+      quiet-period:
+      poll-interval: 2s
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+  cloud:
+    gateway:
+      routes:
+        - id: catalog-route
+          uri: ${CATALOG_SERVICE_URL:http://localhost:50101}/api/books
+          predicates:
+            - Path=/api/books/**
+        - id: order-route
+          uri: ${ORDER_SERVICE_URL:http://localhost:50201}/api/orders
+          predicates:
+            - Path=/api/orders/**
+      httpclient:
+        wiretap: true
+        connect-timeout: 2000
+        response-timeout: 5s
+        pool:
+          type: elastic
+          max-idle-time: 15s
+          max-life-time: 60s
+        
+logging:
+  level:
+    tech.jhipster: DEBUG
+    reactor.netty: DEBUG
+  
