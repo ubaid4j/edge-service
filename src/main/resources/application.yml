@@ -23,10 +23,19 @@ spring:
           uri: ${CATALOG_SERVICE_URL:http://localhost:50101}/api/books
           predicates:
             - Path=/api/books/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: catalogCircuitBreaker
+                fallbackUri: forward:/catalog-fallback
         - id: order-route
           uri: ${ORDER_SERVICE_URL:http://localhost:50201}/api/orders
           predicates:
             - Path=/api/orders/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: orderCircuitBreak
       httpclient:
         wiretap: true
         connect-timeout: 2000
@@ -35,9 +44,34 @@ spring:
           type: elastic
           max-idle-time: 15s
           max-life-time: 60s
-        
+      default-filters:
+        - name: Retry
+          args:
+            retries: 3
+            methods: GET
+            series: SERVER_ERROR
+            exceptions: java.io.IOException, java.util.concurrent.TimeoutException
+            backoff:
+              firstBackoff: 50ms
+              maxBackOff: 500ms
+              factor: 2
+              basedOnPreviousValue: false
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 20
+        permittedNumberOfCallsInHalfOpenState: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 15000
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 5s
+              
 logging:
   level:
     tech.jhipster: DEBUG
-    reactor.netty: DEBUG
+    reactor.netty: INFO
+    io.github.resilience4j: DEBUG
   
