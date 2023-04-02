@@ -4,10 +4,18 @@ server:
     connection-timeout: 2s
   port: 50090
   shutdown: graceful
+  reactive:
+    session:
+      timeout: 10m
   
 spring:
   application:
     name: edge-service
+  session:
+    store-type: redis
+    timeout: 10m
+    redis:
+      namespace: polar:edge
   devtools:
     livereload:
       port: 50091
@@ -56,6 +64,19 @@ spring:
               maxBackOff: 500ms
               factor: 2
               basedOnPreviousValue: false
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter:
+              replenishRate: 10
+              burstCapacity: 20
+              requestedTokens: 1
+        - name: SaveSession
+  data:
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 50988
+      timeout: 1s
 resilience4j:
   circuitbreaker:
     configs:
@@ -74,4 +95,5 @@ logging:
     tech.jhipster: DEBUG
     reactor.netty: INFO
     io.github.resilience4j: DEBUG
+    root: DEBUG
   
