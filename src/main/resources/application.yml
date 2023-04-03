@@ -71,6 +71,8 @@ spring:
               burstCapacity: 20
               requestedTokens: 1
         - name: SaveSession
+    config:
+      enabled: false      
   data:
     redis:
       connect-timeout: 2s
@@ -96,4 +98,6 @@ logging:
     reactor.netty: INFO
     io.github.resilience4j: DEBUG
     root: DEBUG
-  
+
+polar:
+  home-message: Hello Edge Service from default profile 
