@@ -21,6 +21,8 @@ spec:
           ports:
             - containerPort: 50090
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
             - name: CATALOG_SERVICE_URL
               value: http://catalog-service
             - name: ORDER_SERVICE_URL
@@ -31,3 +33,7 @@ spec:
               value: http://config-service
             - name: SPRING_CLOUD_CONFIG_FAIL_FAST
               value: "false"
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
