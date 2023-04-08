@@ -43,7 +43,7 @@ jobs:
           kubectl: 1.26.1
           kubeval: 0.16.1
           command: |
-            kubeval --strict -d --skip-kinds Ingress k8s
+            kubeval --strict --skip-kinds Ingress -d k8s
   package:
     name: Package and Publish
     if: ${{ github.ref == 'refs/heads/main' }}
