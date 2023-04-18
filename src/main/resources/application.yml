@@ -7,7 +7,7 @@ server:
   reactive:
     session:
       timeout: 10m
-  
+
 spring:
   application:
     name: edge-service
@@ -72,7 +72,7 @@ spring:
               requestedTokens: 1
         - name: SaveSession
     config:
-      enabled: false      
+      enabled: false
   data:
     redis:
       connect-timeout: 2s
@@ -91,13 +91,13 @@ resilience4j:
     configs:
       default:
         timeoutDuration: 5s
-              
+
 logging:
   level:
     tech.jhipster: DEBUG
     reactor.netty: INFO
     io.github.resilience4j: DEBUG
-    root: DEBUG
+    root: INFO
 
 polar:
-  home-message: Hello Edge Service from default profile 
+  home-message: Hello Edge Service from default profile
