@@ -8,3 +8,7 @@ spring:
       request-connect-timeout: 5000 #ms
       request-read-timeout: 5000 #ms
       fail-fast: false
+
+logging:
+  level:
+    root: debug
