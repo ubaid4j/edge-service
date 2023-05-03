@@ -15,6 +15,12 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
+import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
+import org.springframework.security.web.server.csrf.CsrfToken;
+import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestHandler;
+import org.springframework.security.web.server.csrf.XorServerCsrfTokenRequestAttributeHandler;
+import org.springframework.web.server.WebFilter;
+import reactor.core.publisher.Mono;
 
 @Configuration
 @EnableWebFluxSecurity
@@ -34,11 +40,19 @@ public class SecurityConfig {
 
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        // TODO: 5/3/23 make csrf good 
+        CookieServerCsrfTokenRepository tokenRepository = CookieServerCsrfTokenRepository.withHttpOnlyFalse();
+        XorServerCsrfTokenRequestAttributeHandler delegate = new XorServerCsrfTokenRequestAttributeHandler();
+        // Use only the handle() method of XorServerCsrfTokenRequestAttributeHandler and the
+        // default implementation of resolveCsrfTokenValue() from ServerCsrfTokenRequestHandler
+        ServerCsrfTokenRequestHandler requestHandler = delegate::handle;
+
         return http
             .authorizeExchange(AUTHORIZE_EXCHANGE)
             .oauth2Login(Customizer.withDefaults())
             .exceptionHandling(EXCEPTION_HANDLING)
             .logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler()))
+            .csrf((csrf) -> csrf.csrfTokenRepository(tokenRepository).csrfTokenRequestHandler(requestHandler))
             .build();
     }
 
@@ -48,4 +62,13 @@ public class SecurityConfig {
         oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}");
         return oidcLogoutSuccessHandler;
     }
-}
+
+    @Bean
+    WebFilter csrfCookieWebFilter() {
+        return (exchange, chain) -> {
+            Mono<CsrfToken> csrfToken = exchange.getAttributeOrDefault(CsrfToken.class.getName(), Mono.empty());
+            return csrfToken.doOnSuccess(token -> {
+                /* Ensures the token is subscribed to. */
+            }).then(chain.filter(exchange));
+        };
+    }}
