@@ -29,10 +29,21 @@ spec:
               value: http://order-service
             - name: SPRING_DATA_REDIS_HOST
               value: redis
+            - name: SPRING_DATA_REDIS_PORT
+              value: "6379"
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service
             - name: SPRING_CLOUD_CONFIG_FAIL_FAST
               value: "false"
+            - name: SPRING_CLOUD_CONFIG_RETRY_MAX_ATTEMPTS
+              value: "1"
+            - name: AUTH_SERVER_URL
+              value: "http://polar-keycloak"
+            - name: SPA_URL
+              value: http://polar-ui
+            - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY
+              value: "DEBUG"
+
           lifecycle:
             preStop:
               exec:
