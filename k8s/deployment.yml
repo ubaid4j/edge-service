@@ -28,7 +28,7 @@ spec:
             - name: ORDER_SERVICE_URL
               value: http://order-service
             - name: SPRING_DATA_REDIS_HOST
-              value: redis
+              value: polar-redis
             - name: SPRING_DATA_REDIS_PORT
               value: "6379"
             - name: SPRING_CLOUD_CONFIG_URI
