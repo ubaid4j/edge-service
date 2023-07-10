@@ -75,6 +75,7 @@ spring:
               burstCapacity: 20
               requestedTokens: 1
         - name: SaveSession
+        - name: TokenRelay
     config:
       enabled: false
   data:
