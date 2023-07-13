@@ -28,7 +28,7 @@ public class SecurityConfig {
     private static final String[] STATIC_RESOURCES_PATH = {"/", "/*.css", "/*.js", "/favicon.ico"};
     private static final Customizer<AuthorizeExchangeSpec> AUTHORIZE_EXCHANGE = (spec) -> spec
         .pathMatchers(STATIC_RESOURCES_PATH).permitAll()
-        .pathMatchers(HttpMethod.GET, "/books/**").permitAll()
+        .pathMatchers(HttpMethod.GET, "/api/books/**").permitAll()
         .anyExchange()
         .authenticated();
     private static final Customizer<ExceptionHandlingSpec> EXCEPTION_HANDLING = (spec) -> spec
@@ -59,7 +59,7 @@ public class SecurityConfig {
         return http
             .authorizeExchange(AUTHORIZE_EXCHANGE)
             .oauth2Login(Customizer.withDefaults())
-            .exceptionHandling(EXCEPTION_HANDLING)
+//            .exceptionHandling(EXCEPTION_HANDLING)
             .logout(logout)
             .csrf(CSRF)
             .build();
