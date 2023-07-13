@@ -91,7 +91,7 @@ spring:
           polarBookShop:
             client-id: edge-service
             client-secret: polar-keycloak-secret
-            scope: openid
+            scope: openid,roles
         provider:
           polarBookShop:
             issuerUri: ${AUTH_SERVER_URL:http://localhost:50907}/realms/PolarBookshop

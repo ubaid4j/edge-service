@@ -56,6 +56,7 @@ class UserControllerTest {
             builder.claim(StandardClaimNames.PREFERRED_USERNAME, expectedUser.username());
             builder.claim(StandardClaimNames.GIVEN_NAME, expectedUser.firstName());
             builder.claim(StandardClaimNames.FAMILY_NAME, expectedUser.lastName());
+            builder.claim("roles", expectedUser.roles());
         };
         return SecurityMockServerConfigurers.mockOidcLogin().idToken(idToken);
     }
