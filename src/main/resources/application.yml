@@ -95,6 +95,9 @@ spring:
         provider:
           polarBookShop:
             issuerUri: ${AUTH_SERVER_URL:http://localhost:50907}/realms/PolarBookshop
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH_SERVER_URL:http://localhost:50907}/realms/PolarBookshop
 resilience4j:
   circuitbreaker:
     configs:
