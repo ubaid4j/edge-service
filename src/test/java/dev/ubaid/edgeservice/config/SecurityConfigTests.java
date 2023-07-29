@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
@@ -25,6 +26,9 @@ public class SecurityConfigTests {
     @MockBean
     ReactiveClientRegistrationRepository clientRegistrationRepository;
 
+    @MockBean
+    ReactiveJwtDecoder reactiveJwtDecoder;
+    
     @Test
     void whenLogoutAuthenticatedAndWithCsrfTokenThen302() {
         when(clientRegistrationRepository.findByRegistrationId("test"))

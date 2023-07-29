@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: edge-service
-          image: ghcr.io/ubaid4j/edge-service:0.0.2-snapshot
+          image: ghcr.io/ubaid4j/edge-service:0.0.3-snapshot
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 50090

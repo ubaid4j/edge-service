@@ -1,13 +1,13 @@
 buildscript {
     dependencies {
-        classpath 'org.graalvm.buildtools:native-gradle-plugin:0.9.20'
+        classpath 'org.graalvm.buildtools:native-gradle-plugin:0.9.23'
     }
 }
 
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.0.5'
-	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.springframework.boot' version '3.1.2'
+	id 'io.spring.dependency-management' version '1.1.2'
 }
 
 if (project.hasProperty('native')) {
@@ -15,7 +15,7 @@ if (project.hasProperty('native')) {
 }
 
 group = 'dev.ubaid'
-version = '0.0.2-SNAPSHOT'
+version = '0.0.3-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
@@ -29,8 +29,8 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2022.0.1")
-	set('testcontainersVersion', "1.17.6")
+	set('springCloudVersion', "2022.0.3")
+	set('testcontainersVersion', "1.18.3")
 }
 
 dependencies {
