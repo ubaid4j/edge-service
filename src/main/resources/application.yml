@@ -115,8 +115,10 @@ logging:
   level:
     tech.jhipster: DEBUG
     reactor.netty: INFO
-    io.github.resilience4j: DEBUG
     root: INFO
+    circuitbreaker: DEBUG
+  group:
+    circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker
 
 polar:
   home-message: Hello Edge Service from default profile
