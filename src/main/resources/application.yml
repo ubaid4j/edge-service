@@ -18,7 +18,7 @@ spring:
       namespace: polar:edge
   devtools:
     livereload:
-      port: 50091
+      port: 51090
     restart:
       quiet-period:
       poll-interval: 2s
@@ -113,6 +113,7 @@ resilience4j:
 
 logging:
   level:
+    dev.ubaid: TRACE
     tech.jhipster: DEBUG
     reactor.netty: INFO
     root: INFO
