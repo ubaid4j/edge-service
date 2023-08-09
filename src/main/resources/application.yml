@@ -1,3 +1,17 @@
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include:
+          - health
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+        
 server:
   netty:
     idle-timeout: 15s
@@ -19,9 +33,6 @@ spring:
   devtools:
     livereload:
       port: 51090
-    restart:
-      quiet-period:
-      poll-interval: 2s
   lifecycle:
     timeout-per-shutdown-phase: 15s
   cloud:

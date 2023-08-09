@@ -30,6 +30,7 @@ public class SecurityConfig {
     private static final Customizer<AuthorizeExchangeSpec> AUTHORIZE_EXCHANGE = (spec) -> spec
         .pathMatchers(STATIC_RESOURCES_PATH).permitAll()
         .pathMatchers(HttpMethod.GET, "/api/books/**").permitAll()
+        .pathMatchers(HttpMethod.GET, "/management/health/**").permitAll()
         .anyExchange()
         .authenticated();
     private static final Customizer<ExceptionHandlingSpec> EXCEPTION_HANDLING = (spec) -> spec
