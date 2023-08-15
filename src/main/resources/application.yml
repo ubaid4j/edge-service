@@ -11,6 +11,8 @@ management:
       show-components: always
       probes:
         enabled: true
+      group:
+        readiness: readinessState,redis
         
 server:
   netty:
