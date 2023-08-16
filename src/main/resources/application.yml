@@ -12,7 +12,8 @@ management:
       probes:
         enabled: true
       group:
-        readiness: readinessState,redis
+        include:
+          readiness: readinessState,redis
         
 server:
   netty:
