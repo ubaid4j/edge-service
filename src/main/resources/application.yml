@@ -14,6 +14,9 @@ management:
       group:
         include:
           readiness: readinessState,redis
+  metrics:
+    tags:
+      application: ${spring.application.name}
         
 server:
   netty:
