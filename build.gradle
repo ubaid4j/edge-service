@@ -15,7 +15,7 @@ if (project.hasProperty('native')) {
 }
 
 group = 'dev.ubaid'
-version = '0.0.3-SNAPSHOT'
+version = '0.0.4-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
