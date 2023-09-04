@@ -137,6 +137,8 @@ logging:
     circuitbreaker: DEBUG
   group:
     circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker
+  pattern:
+    level: "%5p [${spring.application.name}, %X{trace_id}, %X{span_id}]"
 
 polar:
   home-message: Hello Edge Service from default profile
