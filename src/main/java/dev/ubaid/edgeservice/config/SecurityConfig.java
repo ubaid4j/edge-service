@@ -31,6 +31,7 @@ public class SecurityConfig {
         .pathMatchers(STATIC_RESOURCES_PATH).permitAll()
         .pathMatchers(HttpMethod.GET, "/api/books/**").permitAll()
         .pathMatchers(HttpMethod.GET, "/management/health/**").permitAll()
+        .pathMatchers(HttpMethod.GET, "/management/prometheus/**").permitAll()
         .anyExchange()
         .authenticated();
     private static final Customizer<ExceptionHandlingSpec> EXCEPTION_HANDLING = (spec) -> spec
