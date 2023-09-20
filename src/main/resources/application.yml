@@ -8,6 +8,7 @@ management:
           - prometheus
           - info
           - heapdump
+          - env
   endpoint:
     health:
       show-details: always
