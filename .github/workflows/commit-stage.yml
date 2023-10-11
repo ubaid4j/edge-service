@@ -3,7 +3,7 @@ on: push
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ubaid4j/edge-service
-  VERSION: 0.0.5-SNAPSHOT
+  VERSION: ${{ github.sha }}
 jobs:
   build:
     name: Build and Test
@@ -25,12 +25,12 @@ jobs:
         id: scan
         with:
           path: "${{ github.workspace }}"
-          fail-build: false
-          severity-cutoff: high
-          acs-report-enable: true
+          only-fixed: true
+          fail-build: true
+          severity-cutoff: critical
       - name: Upload vulnerability report
         uses: github/codeql-action/upload-sarif@v2
-        if: success() || failure()
+        if: success()
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
       - name: Build, unit tests and integration tests
@@ -38,15 +38,16 @@ jobs:
           chmod +x gradlew
           ./gradlew build
       - name: Setup k8s validator
-        uses: alexellis/setup-arkade@v1
-      - name: Validate Kubernetes manifests
         uses: alexellis/arkade-get@master
         with:
           kubectl: latest
           kubeval: latest
           kustomize: latest
-          command: |
-            kustomize build k8s | kubeval --strict --skip-kinds Ingress -d k8s
+      - name: Validate Kubernetes manifests
+        run: |
+          kustomize build k8s -o k8s/k8s.yml
+          kubeval --strict -d k8s/k8s.yml
+          rm -f k8s/k8s.yml
   package:
     name: Package and Publish
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -75,12 +76,12 @@ jobs:
         id: scan
         with:
           image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
-          fail-build: false
-          severity-cutoff: high
-          acs-report-enable: true
+          fail-build: true
+          only-fixed: true
+          severity-cutoff: critical
       - name: Upload vulnerability report
         uses: github/codeql-action/upload-sarif@v2
-        if: success() || failure()
+        if: success()
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
       - name: Log into container registry
@@ -91,3 +92,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish container image
         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+      - name: Publish container image (latest)
+        run: |
+          docker tag \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }} \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
